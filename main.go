@@ -1,8 +1,8 @@
 package main
 
 import (
-	"awesomeProject/api"
 	"awesomeProject/models"
+	"awesomeProject/routes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -15,21 +15,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	R.GET("/ShowMenu", api.ShowMenu)
-	R.POST("/Collection", api.Collectin)
-	R.POST("/UserLanding", api.UserLanding)
-
-	_ = R.Group("/homepage", api.UserLanding)
-	{
-		R.GET("", api.Home)
-		R.POST("/add", api.AddFriends)
-		R.POST("/creation", api.CreationRoom)
-		R.POST("/join", api.JoinRoom)
-		R.GET("/ready", api.Ready)
-		R.POST("/GameStart", api.Start)
-
+	err = routes.NewRouts()
+	if err != nil {
+		fmt.Printf("%v", err)
 	}
-
 	_ = os.Setenv("GIN_MODE", "release")
 	err2 := R.Run()
 	if err != nil {
